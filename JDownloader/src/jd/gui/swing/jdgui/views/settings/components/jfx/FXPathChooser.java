@@ -1,5 +1,6 @@
 package jd.gui.swing.jdgui.views.settings.components.jfx;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -7,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import org.appwork.storage.JSonStorage;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.locale._AWU;
@@ -21,10 +24,17 @@ import java.io.File;
 public class FXPathChooser extends HBox {
 
 
-    protected TextField txt;
-    protected Button bt;
+    public static enum SelectionMode {
+        FILES_ONLY, DIRECTORIES_ONLY,FILES_AND_DIRECTORIES
+    }
+
+    protected TextField        txt;
+    protected Button           bt;
     protected ComboBox<String> destination;
-    private String id;
+    private String             id;
+    private SelectionMode      selectionMode;
+
+
 
     public FXPathChooser(final String id) {
         this(id, false);
@@ -37,6 +47,16 @@ public class FXPathChooser extends HBox {
         txt.setPromptText(getHelpText());
 
         bt = new Button(getBrowseLabel());
+
+        bt.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                final File file = doFileChooser();
+                if (file == null) { return; }
+                setFile(file);
+//                openDialoug();
+            }
+        });
 
         if (useQuickLIst) {
 
@@ -67,11 +87,18 @@ public class FXPathChooser extends HBox {
         }
     }
 
+
     public File doFileChooser() {
 
-        final ExtFileChooserDialog d = new ExtFileChooserDialog(0, this.getDialogTitle(), null, null);
-        d.setStorageID(this.getID());
-        d.setFileSelectionMode(this.getSelectionMode());
+        switch (getSelectionMode()){
+            case DIRECTORIES_ONLY:
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                directoryChooser.setTitle(getDialogTitle());
+                directoryChooser.showDialog(new Stage());
+
+        }
+
+
         d.setFileFilter(this.getFileFilter());
         d.setType(this.getType());
         d.setMultiSelection(false);
@@ -163,9 +190,9 @@ public class FXPathChooser extends HBox {
         }
     }
 
-    public FileChooserSelectionMode getSelectionMode() {
-
-        return FileChooserSelectionMode.DIRECTORIES_ONLY;
+    public SelectionMode getSelectionMode() {
+        selectionMode = SelectionMode.DIRECTORIES_ONLY;
+        return selectionMode;
     }
 
     public FileChooserType getType() {

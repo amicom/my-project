@@ -194,7 +194,6 @@ public class GeneralSettingsConfigPanel extends AbstractConfigPanel {
     }
 
     public  Scene createScene() {
-
         Accordion main = new Accordion();
         VBox vbox = new VBox(5);
         Label label = new Label(_JDT._.gui_settings_downloadpath_description());
@@ -213,7 +212,7 @@ public class GeneralSettingsConfigPanel extends AbstractConfigPanel {
         button.setMinWidth(Region.USE_PREF_SIZE);
 
         vbox.getChildren().addAll(label, root);
-        vbox.getChildren().add(new FXPathChooser("somthing"));
+        vbox.getChildren().add(new FXPathChooser("somthing",true));
 
 
 
