@@ -17,7 +17,7 @@ import javax.swing.event.DocumentListener;
 import org.appwork.app.gui.copycutpaste.ContextMenuAdapter;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.swing.SwingUtils;
-
+@Deprecated
 public class ExtTextField extends JTextField implements CaretListener, FocusListener, DocumentListener, ContextMenuAdapter, TextComponentInterface {
     /**
      * 

@@ -38,6 +38,7 @@ import org.appwork.storage.config.handler.BooleanKeyHandler;
 import org.appwork.storage.config.handler.KeyHandler;
 import org.appwork.storage.config.swing.models.ConfigIntSpinnerModel;
 import org.appwork.swing.components.ExtCheckBox;
+import org.appwork.swing.components.pathchooser.PathChooser;
 import org.appwork.utils.swing.SwingUtils;
 import org.jdownloader.gui.settings.AbstractConfigPanel;
 import org.jdownloader.gui.settings.Pair;
@@ -111,6 +112,7 @@ public class GeneralSettingsConfigPanel extends AbstractConfigPanel {
         this.addDescription(_JDT._.gui_settings_downloadpath_description());
         this.add(downloadFolder);
         this.add(fxPanel);
+        this.add(new PathChooser("nothing"));
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override

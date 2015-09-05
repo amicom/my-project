@@ -16,24 +16,24 @@ import java.awt.Color;
  * 
  */
 public interface TextComponentInterface {
-    public String getText();
+    String getText();
 
-    public void setText(String text);
-    public String getHelpText();
-    public void setHelpText(final String helpText);
-    public Color getHelpColor();
-    public void setHelpColor(Color color);
-    public void onChanged();
-
-    /**
-     * 
-     */
-    public void selectAll();
+    void setText(String text);
+    String getHelpText();
+    void setHelpText(final String helpText);
+//    Color getHelpColor();
+    void setHelpColor(Color color);
+    void onChanged();
 
     /**
      * 
      */
-    public boolean requestFocusInWindow();
+    void selectAll();
+
+    /**
+     * 
+     */
+    boolean requestFocusInWindow();
     
     
 }

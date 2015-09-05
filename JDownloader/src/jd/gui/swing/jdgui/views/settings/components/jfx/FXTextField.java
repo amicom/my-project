@@ -1,36 +1,32 @@
 package jd.gui.swing.jdgui.views.settings.components.jfx;
 
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import org.appwork.app.gui.copycutpaste.ContextMenuAdapter;
-import org.appwork.swing.components.TextComponentInterface;
 import org.appwork.utils.StringUtils;
-import org.appwork.utils.swing.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-public class FXTextField extends JTextField implements CaretListener, FocusListener, DocumentListener, ContextMenuAdapter, TextComponentInterface {
+public class FXTextField extends TextField implements CaretListener, FocusListener, ContextMenuAdapter {
     /**
      * 
      */
-    private static final long serialVersionUID     = -3625278218179478516L;
-    protected Color           defaultColor;
-    protected Color           helpColor;
+    private static final long serialVersionUID = -3625278218179478516L;
+    protected javafx.scene.paint.Color           defaultColor;
+    protected javafx.scene.paint.Color           helpColor;
 
     {
-        this.addCaretListener(this);
-        this.addFocusListener(this);
-        this.defaultColor = this.getForeground();
+
+        this.defaultColor = Color.BLACK;
         this.helpColor = (Color) UIManager.get("TextField.disabledForeground");
         if (this.helpColor == null) {
-            this.helpColor = Color.LIGHT_GRAY;
+            this.helpColor = Color.LIGHTGRAY;
         }
-        this.getDocument().addDocumentListener(this);
 
     }
     protected String          helpText             = null;
@@ -40,23 +36,6 @@ public class FXTextField extends JTextField implements CaretListener, FocusListe
 
     public void caretUpdate(final CaretEvent arg0) {
 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.
-     * DocumentEvent)
-     */
-    @Override
-    public void changedUpdate(final DocumentEvent e) {
-        if (!this.isHelperEnabled()) {
-            this.onChanged();
-            return;
-        }
-        if (!this.setting) {
-            this.onChanged();
-        }
     }
 
     public void focusGained(final FocusEvent arg0) {
@@ -69,29 +48,16 @@ public class FXTextField extends JTextField implements CaretListener, FocusListe
             }
 
         }
-        this.setForeground(this.defaultColor);
+        this.setStyle("-fx-text-fill: "+ this.defaultColor);
 
     }
 
     public void focusLost(final FocusEvent arg0) {
         if (!this.isHelperEnabled()) { return; }
-        if (this.getDocument().getLength() == 0 || super.getText().equals(this.helpText)) {
+        if (super.getText().equals(this.helpText)) {
             this.setText(this.helpText);
-            this.setForeground(this.helpColor);
+            this.setStyle("-fx-text-fill: " + this.helpColor);
         }
-
-    }
-
-    /**
-     * @return
-     */
-    public Color getDefaultColor() {
-        // TODO Auto-generated method stub
-        return this.defaultColor;
-    }
-
-    public Color getHelpColor() {
-        return this.helpColor;
     }
 
     public String getHelpText() {
@@ -127,35 +93,9 @@ public class FXTextField extends JTextField implements CaretListener, FocusListe
             super.setText("");
         }
         super.replaceSelection(content);
-        this.setForeground(this.defaultColor);
+        this.setStyle("-fx-text-fill: " + this.defaultColor);
     }
 
-    @Override
-    public String getText() {
-        String ret = super.getText();
-        if (!this.isHelperEnabled()) { return ret; }
-        if (ret.equals(this.helpText) && this.getForeground() == this.helpColor) {
-            ret = "";
-        }
-        return ret;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.
-     * DocumentEvent)
-     */
-    @Override
-    public void insertUpdate(final DocumentEvent e) {
-        if (!this.isHelperEnabled()) {
-            this.onChanged();
-            return;
-        }
-        if (!this.setting) {
-            this.onChanged();
-        }
-    }
 
     public boolean isClearHelpTextOnFocus() {
         return this.clearHelpTextOnFocus;
@@ -163,38 +103,6 @@ public class FXTextField extends JTextField implements CaretListener, FocusListe
 
     public boolean isHelperEnabled() {
         return this.helperEnabled;
-    }
-
-    /**
-     * 
-     */
-    public void onChanged() {
-        // TODO Auto-generated method stub
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.
-     * DocumentEvent)
-     */
-    @Override
-    public void removeUpdate(final DocumentEvent e) {
-        if (!this.isHelperEnabled()) {
-            this.onChanged();
-            return;
-        }
-        if (!this.setting) {
-            this.onChanged();
-        }
-    }
-
-    /**
-     * @param b
-     */
-    public void setClearHelpTextOnFocus(final boolean b) {
-        this.clearHelpTextOnFocus = b;
-
     }
 
     public void setHelpColor(final Color helpColor) {
@@ -205,51 +113,20 @@ public class FXTextField extends JTextField implements CaretListener, FocusListe
         this.helperEnabled = helperEnabled;
     }
 
-    /**
-     * @param addLinksDialog_layoutDialogContent_input_help
-     */
+
     public void setHelpText(final String helpText) {
         final String old = this.helpText;
         this.helpText = helpText;
         if (this.getText().length() == 0 || this.getText().equals(old)) {
             this.setText(this.helpText);
-            this.setForeground(this.helpColor);
+            this.setStyle("-fx-text-fill: " + this.helpColor);
         }
     }
 
     public void setLabelMode(final boolean b) {
         this.setEditable(!b);
-        this.setFocusable(!b);
-        this.setBorder(b ? null : new JTextArea().getBorder());
-        SwingUtils.setOpaque(this, !b);
+        this.setFocused(!b);
+        this.setBorder(b ? null : new TextArea().getBorder());
+//        SwingUtils.setOpaque(this, !b);
     }
-
-    @Override
-    public void setText(String t) {
-        if (!this.isHelperEnabled()) {
-            super.setText(t);
-            return;
-        }
-        if (!this.setting) {
-            this.setting = true;
-            try {
-                if (!this.hasFocus() && this.helpText != null && (t == null || t.length() == 0)) {
-                    t = this.helpText;
-                }
-                super.setText(t);
-                if (this.helpText != null) {
-                    if (this.helpText.equals(t)) {
-                        this.setForeground(this.helpColor);
-                    } else {
-
-                        this.setForeground(this.defaultColor);
-                    }
-                }
-            } finally {
-                this.setting = false;
-                this.onChanged();
-            }
-        }
-    }
-
 }
