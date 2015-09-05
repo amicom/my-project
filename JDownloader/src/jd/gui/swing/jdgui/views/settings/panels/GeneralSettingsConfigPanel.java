@@ -29,6 +29,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import jd.gui.swing.jdgui.views.settings.components.*;
+import jd.gui.swing.jdgui.views.settings.components.jfx.FXPathChooser;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.ConstraintParser;
 import net.miginfocom.layout.LC;
@@ -212,11 +213,12 @@ public class GeneralSettingsConfigPanel extends AbstractConfigPanel {
         button.setMinWidth(Region.USE_PREF_SIZE);
 
         vbox.getChildren().addAll(label, root);
+        vbox.getChildren().add(new FXPathChooser("somthing"));
+
 
 
         TitledPane tp = new TitledPane(_GUI._.gui_config_general_downloaddirectory(),vbox);
 
-        System.out.println(String.valueOf(NewTheme.I().getURL("images/", "downloadpath", ".png")));
         tp.setGraphic(new ImageView(String.valueOf(NewTheme.I().getURL("images/", "downloadpath", ".png"))));
 
         main.getPanes().add(tp);
