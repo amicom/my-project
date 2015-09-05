@@ -35,6 +35,10 @@ import org.appwork.utils.swing.dialog.ExtFileChooserDialog;
 import org.appwork.utils.swing.dialog.FileChooserSelectionMode;
 import org.appwork.utils.swing.dialog.FileChooserType;
 
+/**
+ * @deprecated - This class will be replaced by the FXPathChooser rewritten with JavaFX
+ */
+@Deprecated
 public class PathChooser extends MigPanel {
     private class BrowseAction extends AbstractAction {
         /**

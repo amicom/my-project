@@ -24,7 +24,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.io.File;
 
-public class FXFolderChooser extends PathChooser implements SettingsComponent {
+public class FXFolderChooser extends FXPathChooser implements SettingsComponent {
     /**
      *
      */

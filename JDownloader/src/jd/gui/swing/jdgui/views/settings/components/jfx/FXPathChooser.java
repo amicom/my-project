@@ -1,5 +1,8 @@
 package jd.gui.swing.jdgui.views.settings.components.jfx;
 
+import javafx.scene.control.*;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import net.miginfocom.swing.MigLayout;
 import org.appwork.storage.JSonStorage;
 import org.appwork.swing.MigPanel;
@@ -23,11 +26,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class FXPathChooser extends MigPanel {
+//TODO: suppose to replace the PathChooser class
+
+public class FXPathChooser extends HBox {
+
+
+
+
+
     private class BrowseAction extends AbstractAction {
-        /**
-         *
-         */
+
+
         private static final long serialVersionUID = -4350861121298607806L;
 
         BrowseAction() {
@@ -35,13 +44,6 @@ public class FXPathChooser extends MigPanel {
             this.putValue(Action.NAME, FXPathChooser.this.getBrowseLabel());
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see
-         * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
-         * )
-         */
         @Override
         public void actionPerformed(final ActionEvent e) {
 
@@ -53,9 +55,6 @@ public class FXPathChooser extends MigPanel {
 
     }
 
-    /**
-     *
-     */
     private static final long        serialVersionUID = -3651657642011425583L;
 
     protected ExtTextField           txt;
@@ -63,35 +62,21 @@ public class FXPathChooser extends MigPanel {
     private String                   id;
     protected SearchComboBox<String> destination;
 
+    protected javafx.scene.control.TextField textField;
+
     public FXPathChooser(final String id) {
         this(id, false);
     }
 
     public FXPathChooser(final String id, final boolean useQuickLIst) {
-        super("ins 0", "[fill,grow][]", "[]");
+
         this.id = id;
-        this.setOpaque(false);
-        this.txt = new ExtTextField() {
+        this.textField = new TextField() {
             /**
              * 
              */
             private static final long serialVersionUID = 3243788323043431841L;
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.appwork.swing.components.ExtTextField#getText()
-             */
-            @Override
-            public String getText() {
-
-                String ret = super.getText();
-
-                if (ret.equals(helpText) && getForeground() == helpColor) {
-                    ret = "";
-                }
-                return ret;
-            }
 
             @Override
             public JPopupMenu getPopupMenu(final AbstractAction cutAction, final AbstractAction copyAction, final AbstractAction pasteAction, final AbstractAction deleteAction, final AbstractAction selectAction) {
@@ -102,17 +87,12 @@ public class FXPathChooser extends MigPanel {
 
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.appwork.swing.components.ExtTextField#onChanged()
-             */
-            @Override
-            public void onChanged() {
-                FXPathChooser.this.onChanged(FXPathChooser.this.txt);
-            }
-
         };
+
+
+
+
+
         this.txt.setHelpText(this.getHelpText());
         this.bt = new ExtButton(new BrowseAction());
 
