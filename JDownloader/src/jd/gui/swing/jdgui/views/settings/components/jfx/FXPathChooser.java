@@ -11,11 +11,8 @@ import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.appwork.storage.JSonStorage;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.locale._AWU;
-import org.appwork.utils.os.CrossSystem;
-import org.appwork.utils.swing.dialog.Dialog;
 
 import java.io.File;
 
@@ -75,11 +72,6 @@ public class FXPathChooser extends HBox {
         }
         getChildren().add(bt);
         bt.setMinWidth(Region.USE_PREF_SIZE);
-
-        final String preSelection = JSonStorage.getStorage(Dialog.FILECHOOSER).get(Dialog.LASTSELECTION + id, this.getDefaultPreSelection());
-        if (preSelection != null) {
-            this.setFile(new File(preSelection));
-        }
     }
 
     private void updatePath(File file) {
@@ -108,14 +100,6 @@ public class FXPathChooser extends HBox {
 
         return file;
 
-    }
-
-    private boolean equals(final String name, final String findName) {
-        if (CrossSystem.isWindows()) {
-            return name.equalsIgnoreCase(findName);
-        }
-
-        return name.equals(findName);
     }
 
     protected String fileToText(final File file2) {
