@@ -1,0 +1,4 @@
+Changes need to make:
+1)  Delete FileChooserType from org.appwork.utils.swing.dialog (this has been integrated in FXPathChooser)
+1)  Delete FileChooserSelectionMode from org.appwork.utils.swing.dialog (this has been integrated in FXPathChooser)
+2) TODO:// Should create a dialog class that can combine folders and files selection, open and save, etc. The FXPathChooser class started this idea in the "doFileChooser" method

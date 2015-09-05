@@ -9,14 +9,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.appwork.storage.JSonStorage;
 import org.appwork.utils.StringUtils;
 import org.appwork.utils.locale._AWU;
 import org.appwork.utils.os.CrossSystem;
-import org.appwork.utils.swing.dialog.*;
+import org.appwork.utils.swing.dialog.Dialog;
 
-import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
 //TODO: suppose to replace the PathChooser class
@@ -24,44 +24,37 @@ import java.io.File;
 public class FXPathChooser extends HBox {
 
 
-    public static enum SelectionMode {
-        FILES_ONLY, DIRECTORIES_ONLY,FILES_AND_DIRECTORIES
-    }
-
-    protected TextField        txt;
-    protected Button           bt;
+    protected TextField txt;
+    protected Button bt;
     protected ComboBox<String> destination;
-    private String             id;
-    private SelectionMode      selectionMode;
-
-
+    private String id;
+    private SelectionMode selectionMode;
+    private boolean useAsList;
 
     public FXPathChooser(final String id) {
         this(id, false);
     }
 
-    public FXPathChooser(final String id, final boolean useQuickLIst) {
-
+    public FXPathChooser(final String id, final boolean useAsList) {
+        this.useAsList = useAsList;
         this.id = id;
-        txt = new TextField();
-        txt.setPromptText(getHelpText());
-
         bt = new Button(getBrowseLabel());
-
         bt.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 final File file = doFileChooser();
-                if (file == null) { return; }
-                setFile(file);
-//                openDialoug();
+                if (file != null) {
+                    setFile(file);
+                    updatePath(file);
+                }
             }
         });
 
-        if (useQuickLIst) {
+        if (useAsList) {
 
             destination = new ComboBox<String>();
             destination.setEditable(true);
+            destination.setPromptText(getHelpText());
             destination.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
                 @Override
                 public void handle(javafx.event.ActionEvent event) {
@@ -74,6 +67,8 @@ public class FXPathChooser extends HBox {
             HBox.setHgrow(destination, Priority.ALWAYS);
             destination.setMaxWidth(Double.MAX_VALUE);
         } else {
+            txt = new TextField();
+            txt.setPromptText(getHelpText());
             getChildren().add(txt);
             HBox.setHgrow(txt, Priority.ALWAYS);
             txt.setMaxWidth(Double.MAX_VALUE);
@@ -87,30 +82,31 @@ public class FXPathChooser extends HBox {
         }
     }
 
+    private void updatePath(File file) {
+        if (useAsList)
+            destination.setValue(fileToText(file));
+        else
+            txt.setText(fileToText(file));
+    }
 
     public File doFileChooser() {
-
-        switch (getSelectionMode()){
+        File file = null;
+        Stage stage = new Stage();
+        switch (getSelectionMode()) {
             case DIRECTORIES_ONLY:
-                DirectoryChooser directoryChooser = new DirectoryChooser();
-                directoryChooser.setTitle(getDialogTitle());
-                directoryChooser.showDialog(new Stage());
-
+                DirectoryChooser folderChooser = new DirectoryChooser();
+                folderChooser.setTitle(getDialogTitle());
+                file = folderChooser.showDialog(stage);
+                break;
+            case FILES_ONLY:
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle(getDialogTitle());
+                fileChooser.setInitialDirectory(getFile());
+                file = getType() == FileChooserType.OPEN_DIALOG ? fileChooser.showOpenDialog(stage) :
+                        fileChooser.showSaveDialog(stage);
         }
 
-
-        d.setFileFilter(this.getFileFilter());
-        d.setType(this.getType());
-        d.setMultiSelection(false);
-        d.setPreSelection(this.getFile());
-        try {
-            Dialog.I().showDialog(d);
-        } catch (final DialogClosedException e) {
-            e.printStackTrace();
-        } catch (final DialogCanceledException e) {
-            e.printStackTrace();
-        }
-        return d.getSelectedFile();
+        return file;
 
     }
 
@@ -162,10 +158,6 @@ public class FXPathChooser extends HBox {
         }
     }
 
-    public FileFilter getFileFilter() {
-        return null;
-    }
-
     protected String getHelpText() {
         return _AWU.T.pathchooser_helptext();
     }
@@ -195,6 +187,10 @@ public class FXPathChooser extends HBox {
         return selectionMode;
     }
 
+    public void setSelectionMode(SelectionMode selectionMode) {
+        this.selectionMode = selectionMode;
+    }
+
     public FileChooserType getType() {
         return FileChooserType.SAVE_DIALOG;
     }
@@ -205,5 +201,13 @@ public class FXPathChooser extends HBox {
         if (this.destination != null) {
             this.destination.setDisable(!b);
         }
+    }
+
+    public enum SelectionMode {
+        FILES_ONLY, DIRECTORIES_ONLY, FILES_AND_DIRECTORIES
+    }
+
+    public enum FileChooserType {
+        OPEN_DIALOG, SAVE_DIALOG
     }
 }
