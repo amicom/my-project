@@ -1,4 +1,4 @@
-package jd.gui.swing.jdgui.views.settings.components.jfx;
+package jd.gui.JFX.components;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

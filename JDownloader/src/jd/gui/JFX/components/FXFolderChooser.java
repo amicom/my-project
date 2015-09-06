@@ -1,4 +1,4 @@
-package jd.gui.swing.jdgui.views.settings.components.jfx;
+package jd.gui.JFX.components;
 
 import jd.controlling.downloadcontroller.BadDestinationException;
 import jd.controlling.downloadcontroller.DownloadWatchDog;
@@ -8,7 +8,6 @@ import jd.gui.swing.jdgui.views.settings.components.StateUpdateEventSender;
 import jd.gui.swing.jdgui.views.settings.components.StateUpdateListener;
 import jd.gui.swing.jdgui.views.settings.panels.packagizer.VariableAction;
 import org.appwork.swing.components.ExtTextField;
-import org.appwork.swing.components.pathchooser.PathChooser;
 import org.appwork.uio.UIOManager;
 import org.appwork.utils.swing.dialog.DialogCanceledException;
 import org.appwork.utils.swing.dialog.DialogClosedException;

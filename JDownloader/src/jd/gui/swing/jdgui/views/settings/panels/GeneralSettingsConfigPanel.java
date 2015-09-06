@@ -18,6 +18,8 @@ package jd.gui.swing.jdgui.views.settings.panels;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
@@ -29,7 +31,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import jd.gui.swing.jdgui.views.settings.components.*;
-import jd.gui.swing.jdgui.views.settings.components.jfx.FXPathChooser;
+import jd.gui.JFX.components.FXPathChooser;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.ConstraintParser;
 import net.miginfocom.layout.LC;
@@ -54,6 +56,7 @@ import org.jdownloader.settings.staticreferences.CFG_LINKGRABBER;
 import org.jdownloader.translate._JDT;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class GeneralSettingsConfigPanel extends AbstractConfigPanel {
 
@@ -189,7 +192,16 @@ public class GeneralSettingsConfigPanel extends AbstractConfigPanel {
 
     public void initFX(JFXPanel fxPanel) {
         // This method is invoked on the JavaFX thread
-        Scene scene = createScene();
+
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("GeneralSettings.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert root != null;
+        Scene scene = new Scene(root);
+
         fxPanel.setScene(scene);
     }
 
